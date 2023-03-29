@@ -6,6 +6,9 @@ custom:
     useDownloadCache: true
     useStaticCache: true
     layer: true
+    usePipenv: false
+    useDownloadCache: false
+    slim: false
 
 layers:
   fonts:
