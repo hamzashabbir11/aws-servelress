@@ -1,0 +1,47 @@
+---
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+    useDownloadCache: true
+    useStaticCache: true
+    layer: true
+
+layers:
+  fonts:
+    compatibleRuntimes: [python3.8]
+    description: Installs Open Sans font
+    name: ${self:service}-fonts
+    package:
+      artifact: layers/fonts/fonts.zip
+    retain: false
+  weasyprint_deps:
+    compatibleRuntimes: [python3.8]
+    description: Installs weasyprint dependencies
+    name: ${self:service}-weasyprint_deps
+    package:
+      artifact: layers/weasyprint_deps/weasyprint_deps.zip
+    retain: false
+
+functions:
+  main:
+    handler: handler.lambda_main
+    layers:
+      - {Ref: FontsLambdaLayer}
+      - {Ref: PythonRequirementsLambdaLayer}
+      - {Ref: WeasyprintUnderscoredepsLambdaLayer}
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  environment:
+    FONTCONFIG_PATH: /opt/fonts
+    STAGE: ${self:provider.stage}
+  name: aws
+  region: us-west-2
+  runtime: python3.8
+  stage: ${opt:stage, 'dev'}
+  timeout: 60
+
+service: some-service-name
