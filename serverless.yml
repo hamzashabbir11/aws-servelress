@@ -7,7 +7,6 @@ custom:
     useStaticCache: true
     layer: true
     usePipenv: false
-    useDownloadCache: false
     slim: false
 
 layers:
